@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FIGT Funding Pipeline: Volunteer Assignments</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style id="css">
+:root{
+  --bg:#FFFFFF; --surface:#F3F5F4; --surface-2:#E9EDEC; --ink:#1B2A33; --muted:#56636B; --line:#D5DCDA;
+  --accent:#1F5F7A; --accent-ink:#FFFFFF; --warn:#9A3B22;
+  --t1:#2E7D5B; --t2:#2F5D8A; --t3:#6E4F92; --t4:#9A6A12; --t5:#6B737A;
+  --serif:"Newsreader", Georgia, "Times New Roman", serif;
+  --sans:"Public Sans", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#131A1E; --surface:#1B2429; --surface-2:#232E34; --ink:#E4EBEE; --muted:#9AA8AF; --line:#2F3C43;
+    --accent:#6FB3CF; --accent-ink:#0E1A20; --warn:#E08A6E;
+    --t1:#62B892; --t2:#78A7D6; --t3:#AE92D0; --t4:#D6A853; --t5:#9AA3AA;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#131A1E; --surface:#1B2429; --surface-2:#232E34; --ink:#E4EBEE; --muted:#9AA8AF; --line:#2F3C43;
+  --accent:#6FB3CF; --accent-ink:#0E1A20; --warn:#E08A6E;
+  --t1:#62B892; --t2:#78A7D6; --t3:#AE92D0; --t4:#D6A853; --t5:#9AA3AA;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 7rem)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5}
+img{max-width:100%}
+a{color:var(--accent)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 1.25rem}
+header.top{padding:2.5rem 0 1.5rem;border-bottom:1px solid var(--line)}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(1.9rem,4vw,2.8rem);line-height:1.1;margin:0 0 .6rem;letter-spacing:-.01em}
+.lede{max-width:68ch;color:var(--muted);margin:0 0 1.5rem;font-size:1.02rem}
+.stats{display:flex;flex-wrap:wrap;gap:0;border:1px solid var(--line);border-radius:6px;overflow:hidden;width:fit-content;max-width:100%}
+.stat{padding:.7rem 1.2rem;border-right:1px solid var(--line);min-width:8.5rem}
+.stat:last-child{border-right:0}
+.stat b{display:block;font-family:var(--serif);font-size:1.7rem;font-weight:600;line-height:1.1}
+.stat span{color:var(--muted);font-size:.85rem}
+
+.toolbar{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.toolbar .wrap{display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:center;padding-top:.75rem;padding-bottom:.75rem}
+.toolbar input[type=search],.toolbar select{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:.45rem .6rem}
+.toolbar input[type=search]{flex:1 1 14rem;min-width:10rem}
+.toolbar label.check{display:flex;align-items:center;gap:.4rem;font-size:.92rem;white-space:nowrap}
+.savebox{margin-left:auto;display:flex;align-items:center;gap:.75rem}
+#saveStatus{font-size:.88rem;color:var(--muted);max-width:26rem}
+#saveStatus.dirty{color:var(--warn);font-weight:600}
+button{font:inherit;cursor:pointer}
+#saveBtn{background:var(--accent);color:var(--accent-ink);border:0;border-radius:5px;padding:.5rem 1.1rem;font-weight:600}
+#saveBtn:disabled{opacity:.45;cursor:default}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+nav.jump{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.5rem 0 0}
+nav.jump a{text-decoration:none;color:var(--ink);border:1px solid var(--line);border-radius:5px;padding:.35rem .7rem;font-size:.9rem;background:var(--surface)}
+nav.jump a:hover{border-color:var(--accent)}
+
+section.tier{margin:2.5rem 0 0}
+.tier-head{display:flex;gap:1rem;align-items:baseline;flex-wrap:wrap;border-bottom:2px solid var(--tc);padding-bottom:.5rem;margin-bottom:.25rem}
+.tier-head h2{font-family:var(--serif);font-weight:600;font-size:1.55rem;margin:0}
+.tier-head p{margin:0;color:var(--muted);font-size:.93rem;flex:1 1 20rem}
+.tier-count{font-size:.85rem;color:var(--muted)}
+
+.opp{display:grid;grid-template-columns:3.2rem minmax(0,1fr) 19rem;gap:1rem 1.4rem;padding:1.1rem 0 1.1rem .9rem;border-bottom:1px solid var(--line);border-left:4px solid var(--tc)}
+.opp[hidden]{display:none}
+.rank{font-family:var(--serif);font-size:1.9rem;font-weight:600;line-height:1;color:var(--tc);padding-top:.1rem}
+.opp h3{font-size:1.05rem;font-weight:700;margin:0 0 .2rem;line-height:1.35}
+.tag{display:inline-block;font-size:.72rem;font-weight:700;border-radius:3px;padding:.1rem .4rem;margin-left:.35rem;vertical-align:.12em;border:1px solid var(--warn);color:var(--warn)}
+.type{margin:0 0 .6rem;color:var(--muted);font-size:.92rem}
+dl.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));gap:.4rem 1rem;margin:0 0 .5rem}
+dl.facts div{min-width:0}
+dl.facts dt{font-size:.78rem;color:var(--muted)}
+dl.facts dd{margin:0;font-size:.9rem;font-weight:500}
+.rating{color:var(--tc);font-weight:700}
+details{margin-top:.2rem}
+summary{cursor:pointer;color:var(--accent);font-size:.9rem;font-weight:600;width:fit-content}
+details p{margin:.5rem 0 0;max-width:72ch;font-size:.93rem}
+details .src{color:var(--muted);font-size:.83rem}
+
+.assign{display:flex;flex-direction:column;gap:.55rem;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:.75rem}
+.assign label{display:flex;flex-direction:column;gap:.2rem;font-size:.8rem;color:var(--muted);font-weight:600}
+.assign input,.assign select,.assign textarea{font:inherit;font-size:.92rem;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:.4rem .5rem;width:100%;font-weight:400}
+.assign textarea{resize:vertical;min-height:2.6rem}
+.opp.has-owner .assign{border-color:var(--tc)}
+.opp .assign input:disabled,.opp .assign select:disabled,.opp .assign textarea:disabled{opacity:.7}
+
+.empty{padding:2rem 0;color:var(--muted);display:none}
+
+section.block{margin:3.5rem 0 0;padding-top:1.5rem;border-top:1px solid var(--line)}
+section.block h2{font-family:var(--serif);font-weight:600;font-size:1.75rem;margin:0 0 .4rem}
+section.block > .wrap > p.intro{color:var(--muted);max-width:68ch;margin:0 0 1.2rem}
+
+.roster{display:grid;grid-template-columns:repeat(auto-fill,minmax(16rem,1fr));gap:1rem}
+.roster .person{border:1px solid var(--line);border-radius:6px;padding:.8rem 1rem;background:var(--surface)}
+.roster .person h3{margin:0 0 .4rem;font-size:1rem}
+.roster ul{margin:0;padding-left:1.1rem;font-size:.9rem}
+.roster li{margin:.15rem 0}
+.roster .none{color:var(--muted)}
+
+ol.phases{list-style:none;margin:0;padding:0;counter-reset:ph}
+ol.phases > li{display:grid;grid-template-columns:4.5rem minmax(0,1fr);gap:1rem;padding:1.2rem 0;border-bottom:1px solid var(--line)}
+.ph-num{font-family:var(--serif);font-size:2.6rem;font-weight:600;line-height:1;color:var(--accent)}
+.ph-body h3{margin:0 0 .15rem;font-size:1.1rem}
+.ph-when{color:var(--muted);font-size:.9rem;margin:0 0 .6rem}
+.ph-body ul{margin:0;padding-left:1.1rem}
+.ph-body li{margin:.25rem 0;font-size:.94rem}
+.ph-body h4{font-size:.85rem;margin:.9rem 0 .2rem;color:var(--warn)}
+
+ul.checklist{list-style:none;padding:0;margin:0}
+ul.checklist li{display:grid;grid-template-columns:1.6rem minmax(0,1fr);gap:.6rem;padding:.8rem 0;border-bottom:1px solid var(--line)}
+ul.checklist input{width:1.15rem;height:1.15rem;margin-top:.2rem;accent-color:var(--accent)}
+ul.checklist b{display:block}
+ul.checklist p{margin:.15rem 0 0;font-size:.93rem;max-width:74ch}
+ul.checklist li.done b,ul.checklist li.done p{color:var(--muted);text-decoration:line-through}
+.subhead{font-weight:700;font-size:.95rem;margin:1.4rem 0 .2rem}
+
+footer{margin:3rem 0 2.5rem;color:var(--muted);font-size:.85rem}
+
+@media (max-width:900px){
+  .opp{grid-template-columns:2.6rem minmax(0,1fr)}
+  .assign{grid-column:1 / -1}
+}
+@media (max-width:560px){
+  .savebox{margin-left:0;width:100%;justify-content:space-between}
+  .stat{min-width:0;flex:1 1 40%}
+  ol.phases > li{grid-template-columns:3rem minmax(0,1fr)}
+  .ph-num{font-size:2rem}
+}
+@media print{
+  .toolbar,nav.jump,summary{display:none}
+  details > *{display:block}
+  .opp{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="application/json" id="state">{"assign":{},"checks":{},"updated":null}</script>
+<script id="app">
+(function(){
+"use strict";
+var HEAD = '<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>FIGT Funding Pipeline: Volunteer Assignments</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">';
+
+var TIERS = {
+  1:{name:"Tier 1: Guaranteed in-kind software and pro-bono", desc:"Near-certain wins with immediate overhead relief."},
+  2:{name:"Tier 2: High-plausibility corporate sponsorships and in-kind travel", desc:"The primary cash-generation engine for the Forum."},
+  3:{name:"Tier 3: Thematic, research and grassroots foundation grants", desc:"Small-to-mid grants aligned with TCKs, cross-cultural psychology and intercultural dialogue."},
+  4:{name:"Tier 4: Geographically or regionally restricted grants", desc:"Requires specific regional or affiliate tie-ins."},
+  5:{name:"Tier 5: Invitation-only, high-overhead or narrow-niche", desc:"Low yield for cold outreach; long-term relationship plays."}
+};
+
+var OPPS = [
+ {id:"techsoup",t:1,p:1,src:"Original #1",name:"TechSoup Gateway (Google Workspace, Canva Pro, Microsoft 365, Zoom)",type:"In-kind software grants",value:"$15,000 to $30,000/yr in direct cost savings",rating:"Guaranteed (100%)",dl:"Rolling",fit:"Free Google Workspace, 50 Canva Pro seats, 300 Microsoft 365 basic seats, and 50% off Zoom via Goodstack.",act:"Register the 501(c)(3) at TechSoup and Goodstack; instant activation."},
+ {id:"google-ad-grants",t:1,p:1,src:"New research",isNew:true,name:"Google Ad Grants (Google for Nonprofits)",type:"In-kind Google Search advertising",value:"Up to $10,000/month (up to $120,000/yr); unused credit does not roll over",rating:"Very High",dl:"Rolling",fit:"Most registered 501(c)(3)s qualify. Brings global searchers (e.g. 'third culture kids support') to the Forum, webinars, bookstore and affiliates. A separate program from the Google Workspace donation. Compliance takes real work: a 5% monthly click-through rate and conversion tracking are required, and accounts can be paused after two months below 5%.",act:"Enroll in Google for Nonprofits, then activate Ad Grants. Assign one volunteer as account manager and set up conversion tracking on Forum registration and membership. Path: support.google.com/google-ads/answer/57772"},
+ {id:"slack",t:1,p:1,src:"Original #2",name:"Slack for Nonprofits (Salesforce.org)",type:"In-kind communications infrastructure",value:"$20,000+/yr (free Pro plan up to 250 users)",rating:"Guaranteed (100%)",dl:"Rolling",fit:"Connects the globally distributed board, volunteer committees and SIGs across time zones.",act:"Apply online via Slack for Nonprofits; verified through Goodstack."},
+ {id:"claude",t:1,p:1,src:"New research",isNew:true,name:"Claude for Nonprofits (Anthropic)",type:"Discounted AI subscription, plus free AI Fluency for Nonprofits course",value:"Up to 75% off Team/Enterprise; roughly $1,000 to $2,000/yr savings for 5 to 10 seats (estimate)",rating:"Very High",dl:"Rolling",fit:"Open to 501(c)(3)s. Useful for grant drafting, Forum programming, multilingual affiliate communications and research summaries. The Candid connector also helps with funder research.",act:"Apply at claude.com/solutions/nonprofits and verify through Goodstack. Confirm the minimum seat count on the official page, since secondary sources disagree."},
+ {id:"monday-asana",t:1,p:1,src:"Original #3",name:"Monday.com & Asana for Nonprofits",type:"In-kind project management",value:"$3,000 to $8,000/yr (10 free seats + 70% off)",rating:"Guaranteed (100%)",dl:"Rolling",fit:"Standardizes conference planning, volunteer task handoffs and grant pipeline tracking.",act:"Submit the 501(c)(3) letter via monday.com/nonprofits or the Asana Nonprofit portal."},
+ {id:"grammarly",t:1,p:1,src:"Original #4",name:"Grammarly for Nonprofits",type:"In-kind writing and brand tool",value:"$1,500 to $3,000/yr (free Business accounts)",rating:"Guaranteed (100%)",dl:"Rolling",fit:"Ensures brand consistency and clarity for global volunteers writing in non-native English.",act:"Apply directly via Grammarly's nonprofit application page."},
+ {id:"adobe",t:1,p:1,src:"New research",isNew:true,name:"Adobe Express for Nonprofits (plus discounted Acrobat Pro)",type:"Free Adobe Express Premium; discounted Acrobat Pro",value:"Free Premium for up to 50 users; up to 10 discounted Acrobat Pro licenses",rating:"Very High",dl:"Rolling",fit:"Free to qualified 501(c)(3)s. Overlaps with Canva Pro, so the real added value is Acrobat Pro for sponsor contracts, speaker agreements and Forum program PDFs.",act:"Apply directly at adobe.com/nonprofits/express.html (Goodstack verification), not through TechSoup."},
+ {id:"taproot",t:1,p:1,src:"Original #5",name:"Taproot Foundation & Catchafire",type:"Pro-bono professional services",value:"$5,000 to $20,000 in professional labor",rating:"Very High",dl:"Rolling",fit:"Matches expert volunteers with FIGT for marketing, brand identity, web design and strategic planning.",act:"Create a free nonprofit profile on Taproot; scope 1 to 2 discrete marketing or IT projects."},
+ {id:"whova-hopin",t:1,p:1,src:"Original #6",name:"Whova & Hopin (RingCentral) Event Grants",type:"Event tech discount / in-kind credit",value:"$1,000 to $3,000 savings per conference",rating:"Very High",dl:"During Forum platform RFP",fit:"Subsidizes the hybrid/virtual Forum platform on proof of 501(c)(3) status.",act:"Request nonprofit pricing or a grant directly during the sales RFP cycle."},
+ {id:"hubspot",t:1,p:1,src:"New research",isNew:true,name:"HubSpot for Nonprofits (conditional)",type:"40% off paid HubSpot products; free CRM",value:"40% off qualifying Professional/Enterprise; free CRM up to 1 million contacts",rating:"Moderate",dl:"Rolling",fit:"The discount is for new customers on annual contracts only. Worth it only if FIGT moves off Wild Apricot or wants a CRM to track sponsors.",act:"Start with the free CRM for sponsor and funder tracking. Apply for the discount before buying any paid plan."},
+
+ {id:"expat-tax",t:2,p:2,src:"Original #7",name:"Boutique Expat Tax Firms (Bright!Tax, Greenback Expat Tax)",type:"Event and webinar corporate sponsorship",value:"$2,500 to $10,000",rating:"Very High",dl:"4 to 6 months before the Forum",fit:"Right-sized boutique firms that actively sponsor expat family platforms to reach cross-border taxpayers.",act:"Pitch Forum sponsorship packages and co-branded transition webinars directly to marketing heads."},
+ {id:"school-networks",t:2,p:2,src:"Original #8",name:"International School Networks & Insurers (Gallagher International/Clements, ISS, ECIS)",type:"Forum co-sponsorship and outreach grants",value:"$3,000 to $15,000",rating:"Very High",dl:"4 to 6 months before the Forum",fit:"Exact audience overlap: educators, TCK families, international school counselors, youth mental health.",act:"Reach out to ISS Strategic Partnerships, ECIS leadership, and the Gallagher Student & International Education division."},
+ {id:"rmcs",t:2,p:2,src:"Original #9",name:"Global Mobility & Relocation RMCs (Graebel, Cartus, SIRVA, NEI, Sterling, Altair, Budd, Weichert)",type:"Forum sponsorship and exhibitor fees",value:"$2,500 to $15,000 per company",rating:"Very High",dl:"4 to 6 months before the Forum",fit:"Core B2B constituency serving relocated corporate families; the primary cash revenue driver for the Forum.",act:"Deliver the tiered Forum Sponsorship Prospectus to CSR and Marketing directors 4 to 6 months before the Forum."},
+ {id:"united",t:2,p:2,src:"Original #10",name:"United Airlines (Global Community Engagement)",type:"In-kind travel grants (flight vouchers)",value:"$5,000 to $25,000 in flight credits",rating:"High",dl:"Annual application",fit:"Offsets travel costs for keynote speakers, academic fellows and core volunteers flying to the Forum.",act:"Submit the annual travel grant application via the United Airlines Community Portal."},
+ {id:"hsbc",t:2,p:2,src:"Original #11",name:"HSBC Expat (Customer Proposition & Sponsorships)",type:"Corporate brand partnership",value:"$5,000 to $25,000",rating:"High",dl:"Rolling pitch",fit:"Sponsors of the global Expat Explorer survey; actively seek platforms serving expat family resilience.",act:"Pitch the Expat Customer Proposition team (expat.partnerships@hsbc.com), focusing on Forum and webinar reach."},
+ {id:"jetblue",t:2,p:2,src:"New research",isNew:true,name:"JetBlue For Good (in-kind travel certificates)",type:"Travel certificates for fundraising and mission travel",value:"Up to $50,000 program-wide; realistic award 2 to 4 round-trip certificates (estimate)",rating:"Moderate",dl:"About March 2027 (estimate; 2026 window was March 2 to 27)",fit:"Focus areas include youth and education. FIGT must name the JetBlue cities it serves (US East Coast, Caribbean, Latin America, some Europe). One request per calendar year, submitted at least 12 weeks before the event. Not the JetBlue Foundation, which funds STEM only.",act:"Draft the request now and submit via jetblue.com/jetblue-for-good when the window opens."},
+ {id:"insurers",t:2,p:2,src:"Original #12",name:"Expat Insurers & Financial Services (AXA/AXA XL, Allianz, Cigna International)",type:"Corporate sponsorship and employee matching",value:"$1,000 to $10,000",rating:"High",dl:"Rolling",fit:"Aligns with family health abroad; unlocks corporate matching gifts and employee-nominated grants.",act:"Map board and member employer connections at these firms to start internal sponsorship requests."},
+ {id:"babbel",t:2,p:2,src:"New research",isNew:true,name:"Babbel Social Impact (donated or discounted licenses)",type:"In-kind language-learning subscriptions",value:"Unpublished; estimated 25 to 100 licenses",rating:"Moderate",dl:"Rolling (email request)",fit:"Donates free and discounted subscriptions to nonprofits, with a focus on education, immigrants and refugees. Frame the request around FIGT's work with newly arrived families and cross-cultural kids.",act:"Email impact@babbel.com with a one-page request paired with a Forum sponsor recognition package."},
+ {id:"pearson-deel",t:2,p:2,src:"Original #13",name:"Education Publishers & EOR Platforms (Pearson, Deel, Remote.com)",type:"CSR and future-of-work sponsorships",value:"$5,000 to $20,000",rating:"Medium to High",dl:"Rolling",fit:"Pearson funds international school learner wellbeing; Deel and Remote fund digital nomad family integration.",act:"Pitch CSR and Marketing teams, framing FIGT as the authority on cross-cultural remote-family living."},
+ {id:"expedia",t:2,p:2,src:"Original #14",name:"Expedia Group (Global Social Impact)",type:"CSR cash grants",value:"$10,000 to $25,000",rating:"Medium",dl:"Monitor open cycles",fit:"Focuses on inclusive travel and reducing the social and psychological friction of global mobility.",act:"Monitor open CSR cycles via the Global Social Impact division; submit a concept note."},
+
+ {id:"lisle",t:3,p:3,src:"Original #15",name:"Lisle International",type:"Global seed grants",value:"$1,000 to $5,000",rating:"High",dl:"Request to Apply opens May/June 2027; full proposal in autumn",fit:"Dedicated to small, innovative grassroots programs fostering intercultural dialogue and learning.",act:"Two-step application: Request to Apply first, then the full proposal."},
+ {id:"unaoc-bmw",t:3,p:3,src:"Original #16",name:"UNAOC & BMW Group: Intercultural Innovation Hub",type:"Cash grant + 1-year capacity accelerator",value:"$20,000",rating:"High",dl:"Cycle opens early 2027 (about January to April)",fit:"Focuses on scalable intercultural dialogue and social inclusion worldwide; no geographic restrictions.",act:"Submit a proposal framing TCK and cross-cultural family belonging as an innovative inclusion model."},
+ {id:"spssi",t:3,p:3,src:"New research",isNew:true,name:"SPSSI Grants (Teaching Grants, Grants-in-Aid, Action Teaching Grants)",type:"Small event and research grants for SPSSI members",value:"Teaching up to $2,500; Grants-in-Aid up to $2,000; Action Teaching $100 to $1,500",rating:"Medium to High",dl:"Grants-in-Aid Oct 15, 2026 and May 15, 2027; Teaching Feb 15, 2027; Action Teaching Apr 30, 2027",fit:"Teaching Grants fund small events and pre-conference workshops, a direct fit for a Forum research workshop. The lead applicant must be an SPSSI member (membership can go in with the application). SPSSI is separate from the American Psychological Foundation.",act:"Recruit a Research Network PhD as lead applicant. Paths: spssi.org/grantsinaid and spssi.org/actionteachinggrant"},
+ {id:"awesome",t:3,p:3,src:"Original #17",name:"The Awesome Foundation",type:"Micro-grants",value:"$1,000 (no strings attached)",rating:"High",dl:"Rolling monthly",fit:"Rapid seed funding for a discrete pilot, such as a TCK transition toolkit or student prize.",act:"Apply to rolling monthly chapters worldwide."},
+ {id:"shanti",t:3,p:3,src:"Original #18",name:"Shanti Foundation for Intercultural Understanding",type:"Private family foundation grant",value:"$1,000 to $5,000 (average about $3,500)",rating:"High",dl:"Relationship-driven",fit:"Modest, accessible grants teaching respect for 'otherness' and intercultural harmony.",act:"Warm phone or mail inquiry to the Austin, TX office (no open portal)."},
+ {id:"rotary",t:3,p:3,src:"Original #19",name:"Rotary International (District & Global Grants)",type:"Matching and project grants",value:"$2,500 to $30,000",rating:"Medium to High",dl:"Depends on host club and district",fit:"Strong alignment in Peacebuilding and Mental Health; large expat member presence.",act:"Partner with a local or international Rotary Club (e.g. Rotary E-Club of Global Expatriates) as co-sponsor."},
+ {id:"spencer",t:3,p:3,src:"Original #20",name:"Spencer Foundation (Conference Grants)",type:"Research and conference grants",value:"Up to $50,000",rating:"Medium",dl:"Check portal",fit:"World-class funder of education research; funds conferences advancing educational equity and learning.",act:"Academic proposal via the online portal, highlighting FIGT's international schooling and TCK research."},
+ {id:"wenner-gren",t:3,p:3,src:"New research",isNew:true,name:"Wenner-Gren Foundation (Conference and Workshop Grants)",type:"Grant for academic meetings and workshops",value:"Up to $20,000; no overhead covered",rating:"Medium (conditional)",dl:"Dec 1, 2026 (events from July 1, 2027) or June 1, 2027 (events from Jan 1, 2028)",fit:"Supports meetings that advance anthropological conversations, such as mobility, TCK identity and transnational family life. The lead organizer must hold an anthropology PhD or be affiliated with an anthropology department.",act:"Identify an anthropologist in the Research Network now. Apply at wennergren.org; one application per applicant per year."},
+ {id:"ib",t:3,p:3,src:"Original #21",name:"International Baccalaureate (Jeff Thompson Award)",type:"Research grant",value:"Up to $20,000 / £15,000",rating:"Medium",dl:"Annual RFP, announced Q1/Q2",fit:"Funds research on international school student transitions, intercultural understanding and wellbeing.",act:"FIGT Research Network members submit a proposal during the annual RFP cycle."},
+ {id:"apf",t:3,p:3,src:"Original #22",name:"American Psychological Foundation (Visionary Grants)",type:"Program and seed research grants",value:"Up to $20,000",rating:"Medium",dl:"Typically early April",fit:"Supports psychological research and interventions addressing cross-cultural mental health and family dynamics.",act:"Submit via the APF portal."},
+ {id:"pollination",t:3,p:4,src:"New research",isNew:true,name:"The Pollination Project (Daily Grants), via an FIGT Affiliate",type:"Small seed grant",value:"Up to $500",rating:"Medium (conditional)",dl:"Rolling; reviewed monthly, 6 to 12 week response",fit:"Applicant must have no paid staff, an annual budget under $50,000, a project under $10,000, and no prior funding. Academic research is excluded. An informal FIGT Affiliate group running a local meetup for newly arrived families is the best applicant.",act:"Apply at thepollinationproject.smapply.us with an English application and a referee."},
+
+ {id:"tmu",t:4,p:4,src:"Original #23",name:"Trust for Mutual Understanding (TMU)",type:"Program and exchange grants",value:"$5,000 to $25,000",rating:"Medium",dl:"Check TMU cycle",fit:"Funds exchanges between the US and Central/Eastern Europe in culture and education.",act:"Viable if FIGT structures a Forum track or research exchange with Central/Eastern European educators."},
+ {id:"japan-foundation",t:4,p:4,src:"Original #24",name:"The Japan Foundation (Cultural Exchange Grants)",type:"Program support grants",value:"Variable / partial funding",rating:"Medium",dl:"Fall deadline",fit:"Supports international intellectual dialogue and cross-cultural exchange involving Japan and Asia-Pacific.",act:"Apply ahead of Asia-Pacific affiliate initiatives or East-West cultural transition Forum tracks."},
+ {id:"musser",t:4,p:4,src:"Original #25",name:"Laura Jane Musser Fund (Intercultural Harmony)",type:"Planning ($5k) / Implementation ($25k)",value:"$5,000 to $25,000",rating:"Moderate (geo-restricted)",dl:"May 17 to June 17, 2027",fit:"Excellent mission fit, but the project must take place in CO, HI, MN, WY, or parts of NC.",act:"Partner with a US Affiliate in MN or CO."},
+ {id:"longview",t:4,p:4,src:"New research",isNew:true,name:"Longview Foundation for Education in World Affairs & International Understanding",type:"Project grants for US PK-12 global competence and teacher training",value:"About $2,000 to $25,000 (typical $16,000 to $20,000)",rating:"Moderate (geo-restricted)",dl:"Letter of inquiry Jan 15 or June 15 (sources conflict; confirm)",fit:"US PK-12 only. Does not fund projects outside the US, individual schools, travel or general operating costs. Viable for a US multi-district teacher-training module on supporting globally mobile, immigrant and returning students.",act:"Submit a letter of inquiry via longviewfdn.smapply.io after confirming the 2027 date."},
+ {id:"bosch",t:4,p:4,src:"Original #26",name:"Robert Bosch Stiftung (Global Issues / Migration)",type:"European foundation grants",value:"Variable (mid to large)",rating:"Moderate",dl:"Monitor open calls",fit:"Strong on cross-border integration, but requires framing around migration cohesion in Europe.",act:"Monitor open calls for European and cross-border integration initiatives via European affiliates."},
+ {id:"axa-xl",t:4,p:4,src:"Original #27",name:"AXA XL Regional Grant Program",type:"Regional community grants",value:"Up to $20,000+",rating:"Moderate",dl:"About March 2027 (biennial)",fit:"Focuses on social inclusion and health in regions where AXA XL has physical offices.",act:"Track the biennial window and prepare with an affiliate near an AXA XL office."},
+
+ {id:"aws-imagine",t:5,p:3,src:"New research",isNew:true,name:"AWS Imagine Grant (Momentum to Modernize Award)",type:"Unrestricted cash plus AWS cloud credits",value:"Up to $50,000 cash + up to $20,000 AWS credit",rating:"Low",dl:"Spring 2027 (estimate; 2026 round ran March 19 to June 5)",fit:"Open to any US 501(c) but very competitive, with two rounds. Only worth it for a real cloud project, such as a searchable Research Network archive of Forum presentations.",act:"Monitor aws.amazon.com/government-education/nonprofits/aws-imagine-grant-program"},
+ {id:"intl-sos",t:5,p:2,src:"New research",isNew:true,name:"International SOS Foundation",type:"Commissioned research, co-hosted events, thought leadership",value:"Unpublished; no open grant program",rating:"Invitation only",dl:"Relationship-driven",fit:"The strongest mission fit of any corporate foundation found: health, safety, security and wellbeing of mobile workers. There is no open application.",act:"Pitch a co-branded research brief on accompanying families and employer Duty of Care, and offer a Forum session slot, via internationalsosfoundation.org."},
+ {id:"cigna-foundation",t:5,p:4,src:"Original #28",name:"Cigna Group Foundation (Youth Mental Health)",type:"Large program grants",value:"$150,000 (fixed award floor)",rating:"Low",dl:"Check cycle",fit:"High award floor; restricted to 10 US states; requires heavy direct-service infrastructure.",act:"Pursue only as a co-applicant with a US-based youth clinical health provider."},
+ {id:"usaa",t:5,p:2,src:"New research",isNew:true,name:"USAA Foundation",type:"Corporate foundation grants",value:"Unpublished ($2,500 to $50,000 reported, unverified)",rating:"Invitation only",dl:"Relationship-driven",fit:"Military families relocate repeatedly and mental health and wellbeing is a core USAA area, but the foundation does not accept unsolicited requests.",act:"Build a military-family relocation track at the Forum and seek introductions through USAA employees or partner nonprofits serving military families."},
+ {id:"woodruff",t:5,p:4,src:"Original #29",name:"Bob Woodruff Foundation",type:"Veteran and military family grants",value:"Variable ($10k+)",rating:"Low",dl:"Check cycle",fit:"Exclusively funds military and veteran families.",act:"Viable only if FIGT launches a ring-fenced Military Transition Project."},
+ {id:"southwest",t:5,p:2,src:"New research",isNew:true,name:"Southwest Airlines Tickets for Time",type:"Donated round-trip tickets",value:"1 round-trip ticket per 40 employee volunteer hours; up to 6/yr",rating:"Employee-driven only",dl:"Ongoing",fit:"Southwest does not accept unsolicited donation requests. Only possible if an FIGT volunteer or member works for Southwest and logs volunteer hours with FIGT.",act:"Survey volunteers and members for Southwest employees and ask them to log their hours with FIGT."},
+ {id:"oak",t:5,p:4,src:"Original #30",name:"Oak Foundation",type:"International human rights / migration",value:"$25,000+",rating:"Low",dl:"Budgets set a year ahead",fit:"Commits budgets a year ahead; approves very few unsolicited letters of enquiry.",act:"Submit a letter of enquiry only if launching a multi-year global research initiative."},
+ {id:"western-union",t:5,p:4,src:"New research",isNew:true,name:"Western Union Foundation",type:"Corporate foundation grants",value:"Up to $250,000 (above FIGT's range)",rating:"Low (solicited only)",dl:"Monitor only",fit:"The focus is economic opportunity for migrants and refugees, and the foundation does not accept unsolicited proposals. Its Global Fellowship is for individual entrepreneurs, not FIGT.",act:"Monitor only; share the Fellowship with FIGT members running ventures that serve refugees."},
+ {id:"unbound",t:5,p:4,src:"Original #31",name:"Unbound Philanthropy",type:"Strategic foundation grants",value:"Variable",rating:"Unsolicited not accepted",dl:"Invitation only",fit:"Strictly invitation-only funder of migration and belonging.",act:"Network with current Unbound grantees to build relational awareness."}
+];
+
+var PHASES = [
+ {n:1,title:"Immediate in-kind capture and overhead reduction",when:"Months 1 to 2 (0 to 60 days)",orig:[
+  "Register TechSoup and Goodstack to unlock Google Workspace, Microsoft 365 (300 seats), Canva (50 seats) and Zoom (50% off).",
+  "Activate Slack for Nonprofits (free Pro up to 250 users) and Monday.com / Asana (free or discounted seats).",
+  "Apply for Grammarly for Nonprofits (free business writing tools for global content volunteers).",
+  "Create a Taproot Foundation profile and scope pro-bono marketing and website projects.",
+  "Submit nonprofit RFP discount requests to Whova / Hopin for the upcoming Annual Forum."],
+  added:[
+  "Activate Google Ad Grants with a named volunteer account manager and conversion tracking.",
+  "Claim Claude for Nonprofits and Adobe Express for Nonprofits using the same Goodstack verification.",
+  "Set up the free HubSpot CRM for sponsor and funder tracking.",
+  "If a Research Network PhD has a project ready, submit SPSSI Grants-in-Aid by October 15, 2026."]},
+ {n:2,title:"Corporate sponsorship and flight-grant outreach engine",when:"Months 3 to 5 (60 to 150 days)",orig:[
+  "Finalize the tiered Annual Forum Sponsorship Prospectus (B2B packages from $2.5k to $25k).",
+  "Target expat tax and relocation sectors: Bright!Tax, Greenback Expat Tax, Graebel, Cartus, SIRVA, NEI.",
+  "Target international school stakeholders: ISS, ECIS, Gallagher International / Clements.",
+  "Pitch HSBC Expat (Customer Proposition team) and tech platforms (Deel, Remote) for Forum co-branding.",
+  "Submit the United Airlines Community Travel Grant application for keynote and staff flight vouchers.",
+  "Audit the board and member network for matching gifts (AXA, Allianz, Pearson, multinationals)."],
+  added:[
+  "Send the Babbel license request and the International SOS Foundation research-partnership pitch.",
+  "Survey volunteers for Southwest employees and map warm introductions to USAA.",
+  "Prepare the JetBlue For Good request so it is ready for the expected March 2027 window."]},
+ {n:3,title:"Competitive foundation cycles and Rotary partnerships",when:"Months 6 to 10 (early 2027 cycles)",orig:[
+  "Prepare and submit the UNAOC / BMW Intercultural Innovation Hub proposal ($20k), about January to April.",
+  "Submit the Lisle International Global Seed Grant Request to Apply (opens May/June).",
+  "Connect with a host Rotary Club (e.g. Rotary E-Club of Global Expatriates) for a District Grant match.",
+  "Coordinate with the FIGT Research Network for the IB Jeff Thompson Award and APF Visionary Grant (Q1/Q2).",
+  "If academically oriented, draft the Spencer Foundation Conference Grant ($50k) for Forum research tracks."],
+  added:[
+  "Wenner-Gren Conference and Workshop Grant: December 1, 2026 at the earliest; June 1, 2027 is realistic.",
+  "SPSSI Teaching Grant (February 15, 2027) for a Forum pre-conference research workshop.",
+  "SPSSI Action Teaching Grant (April 30, 2027) and Grants-in-Aid spring round (May 15, 2027).",
+  "JetBlue For Good (March 2027, estimated) and AWS Imagine (spring 2027, estimated)."]},
+ {n:4,title:"Regional place-based and long-horizon grants",when:"Months 11+ (year 2 horizon)",orig:[
+  "Structure a US-affiliate partner project in MN or CO for the Laura Jane Musser Fund (window May to June 2027).",
+  "Apply to the AXA XL Regional Community Grants cycle (about March 2027).",
+  "Develop TMU (Central/Eastern Europe) or Japan Foundation (Asia-Pacific) regional Forum tracks.",
+  "Cultivate relationships within Grantmakers Concerned with Immigrants and Refugees (GCIR) networks."],
+  added:[
+  "Longview Foundation letter of inquiry for a US K-12 educator project (confirm the date).",
+  "Pollination Project applications through individual Affiliates, on a rolling basis.",
+  "Keep monitoring Western Union Foundation and building relationships with USAA and International SOS."]}
+];
+
+var CHECKS_ORIG = [
+ {id:"c-saas",title:"Grab the free SaaS stack this week (Tier 1)",body:"Deploying Slack, Monday.com and Grammarly alongside Google and Canva will save FIGT over $25,000/year in operating overhead and prevent volunteer burnout."},
+ {id:"c-b2b",title:"Anchor the Forum revenue in niche B2B (Tier 2)",body:"Focus the sponsorship pitch on Bright!Tax, Greenback Expat Tax, ISS and Gallagher International, where FIGT's audience is an exact match and decision cycles are faster than Fortune 500 banks."},
+ {id:"c-grassroots",title:"Anchor grant writing in grassroots intercultural funds (Tier 3)",body:"Prioritize Lisle International ($5k) and the UNAOC / BMW Hub ($20k). These programs celebrate small, globally minded organizations and avoid the strict US-state barriers of larger domestic foundations."}
+];
+var CHECKS_NEW = [
+ {id:"c-adgrants",title:"Activate Google Ad Grants this month",body:"Assign a volunteer owner and build three campaigns: Forum, webinars and membership, and research resources. Set up conversion tracking before launch so the account is not suspended."},
+ {id:"c-goodstack",title:"Verify FIGT through Goodstack once, then claim Claude and Adobe the same week",body:"Put the 501(c)(3) determination letter and EIN into a single verification packet."},
+ {id:"c-scholars",title:"Recruit two Research Network scholars as lead applicants",body:"An SPSSI member for Grants-in-Aid (October 15, 2026) or the Teaching Grant (February 15, 2027), and an anthropology PhD for Wenner-Gren (December 1, 2026 or June 1, 2027). Offer Forum stage time and FIGT co-branding in return."},
+ {id:"c-babbel-sos",title:"Send the Babbel email and the International SOS Foundation pitch in Phase 2",body:"Pair each with a specific Forum visibility package."},
+ {id:"c-jetblue",title:"Calendar the JetBlue For Good window and draft the request now",body:"Name the JetBlue cities FIGT serves and how the travel will be used for the Forum."}
+];
+
+var STATUSES = ["Not started","Researching","Drafting","Submitted","Awarded","Declined","Not pursuing"];
+var DRAFT_KEY = "figt-pipeline-draft";
+var LOCAL_KEY = "figt-pipeline-local";
+
+function norm(s){
+  s = (s && typeof s === "object") ? s : {};
+  var out = {assign:{},checks:{},updated:s.updated||null};
+  var a = s.assign||{}, c = s.checks||{};
+  Object.keys(a).forEach(function(k){
+    var r = a[k]||{};
+    var v = String(r.v||""), st = String(r.s||""), n = String(r.n||"");
+    if (v||st||n) out.assign[k] = {v:v,s:st,n:n};
+  });
+  Object.keys(c).forEach(function(k){ if (c[k]) out.checks[k] = true; });
+  return out;
+}
+function same(a,b){ return JSON.stringify(norm(a)) === JSON.stringify(norm(b)); }
+function sameData(a,b){ var x=norm(a),y=norm(b); x.updated=null; y.updated=null; return JSON.stringify(x)===JSON.stringify(y); }
+
+var saved;
+try { saved = norm(JSON.parse(document.getElementById("state").textContent)); } catch(e){ saved = norm({}); }
+var current = norm(saved);
+try {
+  var d = sessionStorage.getItem(DRAFT_KEY);
+  if (d) {
+    var dd = norm(JSON.parse(d));
+    if (same(dd, saved) || sameData(dd, saved)) sessionStorage.removeItem(DRAFT_KEY);
+    else current = dd;
+  }
+} catch(e){}
+
+var mode = "pending"; // shared | local | readonly
+var artifactNs = null;
+var statusMsg = "";
+
+function el(tag, attrs, kids){
+  var e = document.createElement(tag);
+  if (attrs) Object.keys(attrs).forEach(function(k){
+    if (k === "text") e.textContent = attrs[k];
+    else if (k === "cls") e.className = attrs[k];
+    else if (k === "html") e.innerHTML = attrs[k];
+    else e.setAttribute(k, attrs[k]);
+  });
+  (kids||[]).forEach(function(k){ if (k) e.appendChild(k); });
+  return e;
+}
+function tierColor(t){ return "var(--t"+t+")"; }
+function rec(id){ return current.assign[id] || {v:"",s:"",n:""}; }
+function setRec(id, field, val){
+  var r = rec(id); r = {v:r.v,s:r.s,n:r.n}; r[field] = val;
+  if (!r.v && !r.s && !r.n) delete current.assign[id]; else current.assign[id] = r;
+  changed();
+}
+function stashDraft(obj){ try { sessionStorage.setItem(DRAFT_KEY, JSON.stringify(obj)); } catch(e){} }
+function clearDraft(){ try { sessionStorage.removeItem(DRAFT_KEY); } catch(e){} }
+
+var rosterTimer = null;
+function changed(){
+  if (sameData(current, saved)) clearDraft(); else stashDraft(current);
+  statusMsg = "";
+  updateBar(); updateStats();
+  clearTimeout(rosterTimer); rosterTimer = setTimeout(function(){ renderRoster(); refreshDatalist(); applyFilters(); }, 350);
+}
+
+/* ---------- Render ---------- */
+var root = document.getElementById("root");
+var rowEls = {};
+
+function render(){
+  root.innerHTML = "";
+  // Header
+  var hdr = el("header",{cls:"top"},[el("div",{cls:"wrap"},[
+    el("h1",{text:"FIGT funding pipeline"}),
+    el("p",{cls:"lede",text:"All 46 opportunities in one ranked list, from the most certain wins to long-term relationship plays. Put a volunteer's name on each grant, set its status, and save so the whole team sees the same assignments."}),
+    el("div",{cls:"stats",id:"stats"})
+  ])]);
+  root.appendChild(hdr);
+
+  // Toolbar
+  var tierSel = el("select",{id:"fTier","aria-label":"Filter by tier"},[el("option",{value:"",text:"All tiers"})]);
+  [1,2,3,4,5].forEach(function(t){ tierSel.appendChild(el("option",{value:String(t),text:"Tier "+t})); });
+  var phSel = el("select",{id:"fPhase","aria-label":"Filter by phase"},[el("option",{value:"",text:"All phases"})]);
+  [1,2,3,4].forEach(function(p){ phSel.appendChild(el("option",{value:String(p),text:"Phase "+p})); });
+  var stSel = el("select",{id:"fStatus","aria-label":"Filter by status"},[el("option",{value:"",text:"Any status"})]);
+  STATUSES.forEach(function(s){ stSel.appendChild(el("option",{value:s,text:s})); });
+  var unCb = el("input",{type:"checkbox",id:"fUnassigned"});
+  var bar = el("div",{cls:"toolbar"},[el("div",{cls:"wrap"},[
+    el("input",{type:"search",id:"fText",placeholder:"Search funders, volunteers, notes","aria-label":"Search"}),
+    tierSel, phSel, stSel,
+    el("label",{cls:"check"},[unCb, document.createTextNode("Unassigned only")]),
+    el("div",{cls:"savebox"},[el("span",{id:"saveStatus",role:"status","aria-live":"polite"}), el("button",{id:"saveBtn",type:"button",text:"Save assignments"})])
+  ])]);
+  root.appendChild(bar);
+
+  var main = el("main",{cls:"wrap"});
+  var jump = el("nav",{cls:"jump","aria-label":"Sections"});
+  [1,2,3,4,5].forEach(function(t){ jump.appendChild(el("a",{href:"#tier-"+t,text:"Tier "+t})); });
+  jump.appendChild(el("a",{href:"#roster",text:"Who's on what"}));
+  jump.appendChild(el("a",{href:"#timeline",text:"4-phase timeline"}));
+  jump.appendChild(el("a",{href:"#checklist",text:"Key action checklist"}));
+  main.appendChild(jump);
+
+  var dl = el("datalist",{id:"vols"}); main.appendChild(dl);
+
+  [1,2,3,4,5].forEach(function(t){
+    var list = OPPS.map(function(o,i){ o.rank=i+1; return o; }).filter(function(o){ return o.t===t; });
+    var sec = el("section",{cls:"tier",id:"tier-"+t,style:"--tc:"+tierColor(t)},[
+      el("div",{cls:"tier-head"},[el("h2",{text:TIERS[t].name}),el("p",{text:TIERS[t].desc}),el("span",{cls:"tier-count","data-count":String(t)})])
+    ]);
+    list.forEach(function(o){ sec.appendChild(renderOpp(o)); });
+    main.appendChild(sec);
+  });
+  main.appendChild(el("p",{cls:"empty",id:"empty",text:"No opportunities match these filters. Clear the search or choose All tiers to see the full list."}));
+  root.appendChild(main);
+
+  // Roster
+  root.appendChild(el("section",{cls:"block",id:"roster"},[el("div",{cls:"wrap"},[
+    el("h2",{text:"Who's on what"}),
+    el("p",{cls:"intro",text:"Built from the volunteer names above. Separate two names with a comma to share a grant."}),
+    el("div",{cls:"roster",id:"rosterList"})
+  ])]));
+
+  // Timeline
+  var ol = el("ol",{cls:"phases"});
+  PHASES.forEach(function(ph){
+    var body = el("div",{cls:"ph-body"},[el("h3",{text:ph.title}),el("p",{cls:"ph-when",text:ph.when})]);
+    var ul = el("ul"); ph.orig.forEach(function(s){ ul.appendChild(el("li",{text:s})); }); body.appendChild(ul);
+    body.appendChild(el("h4",{text:"Added from the new research"}));
+    var ul2 = el("ul"); ph.added.forEach(function(s){ ul2.appendChild(el("li",{text:s})); }); body.appendChild(ul2);
+    ol.appendChild(el("li",{},[el("div",{cls:"ph-num",text:String(ph.n),"aria-hidden":"true"}),body]));
+  });
+  root.appendChild(el("section",{cls:"block",id:"timeline"},[el("div",{cls:"wrap"},[
+    el("h2",{text:"4-phase implementation timeline"}),
+    el("p",{cls:"intro",text:"The original timeline, with the new opportunities slotted into the phase where they belong."}),
+    ol
+  ])]));
+
+  // Checklist
+  var wrapC = el("div",{cls:"wrap"},[el("h2",{text:"Key action checklist"}),el("p",{cls:"intro",text:"Tick items off as the development team completes them. Checkmarks save with the assignments."})]);
+  wrapC.appendChild(el("p",{cls:"subhead",text:"Original checklist"}));
+  wrapC.appendChild(renderChecks(CHECKS_ORIG));
+  wrapC.appendChild(el("p",{cls:"subhead",text:"Top five new moves"}));
+  wrapC.appendChild(renderChecks(CHECKS_NEW));
+  root.appendChild(el("section",{cls:"block",id:"checklist"},[wrapC]));
+
+  root.appendChild(el("footer",{cls:"wrap",text:"Ratings for original entries are unchanged from the Master Prioritization Matrix. Entries marked New come from the September 2026 addendum; estimated values and dates are labeled as estimates."}));
+
+  // Wire toolbar
+  ["fText","fTier","fPhase","fStatus","fUnassigned"].forEach(function(id){
+    var n = document.getElementById(id);
+    n.addEventListener(id==="fText"?"input":"change", applyFilters);
+  });
+  document.getElementById("saveBtn").addEventListener("click", save);
+
+  updateStats(); updateBar(); renderRoster(); refreshDatalist(); applyFilters();
+}
+
+function renderOpp(o){
+  var r = rec(o.id);
+  var h3 = el("h3",{},[document.createTextNode(o.name)]);
+  if (o.isNew) h3.appendChild(el("span",{cls:"tag",text:"New"}));
+  var facts = el("dl",{cls:"facts"},[
+    el("div",{},[el("dt",{text:"Est. value"}),el("dd",{text:o.value})]),
+    el("div",{},[el("dt",{text:"Rating"}),el("dd",{cls:"rating",text:o.rating})]),
+    el("div",{},[el("dt",{text:"Phase"}),el("dd",{text:"Phase "+o.p})]),
+    el("div",{},[el("dt",{text:"Deadline or window"}),el("dd",{text:o.dl})])
+  ]);
+  var det = el("details",{},[
+    el("summary",{text:"Why it fits and how to apply"}),
+    el("p",{},[el("strong",{text:"Fit: "}),document.createTextNode(o.fit)]),
+    el("p",{},[el("strong",{text:"Next action: "}),document.createTextNode(o.act)]),
+    el("p",{cls:"src",text:"Source: "+o.src})
+  ]);
+  var vIn = el("input",{type:"text",list:"vols",placeholder:"Volunteer name",value:r.v,"aria-label":"Volunteer for "+o.name});
+  vIn.value = r.v;
+  var sSel = el("select",{"aria-label":"Status for "+o.name});
+  STATUSES.forEach(function(s){ sSel.appendChild(el("option",{value:s,text:s})); });
+  sSel.value = r.s || "Not started";
+  var nTa = el("textarea",{rows:"2",placeholder:"Notes, next step, due date","aria-label":"Notes for "+o.name});
+  nTa.value = r.n;
+  vIn.addEventListener("input", function(){ setRec(o.id,"v",vIn.value.trim() ? vIn.value : ""); art.classList.toggle("has-owner", !!vIn.value.trim()); });
+  sSel.addEventListener("change", function(){ setRec(o.id,"s",sSel.value==="Not started"?"":sSel.value); });
+  nTa.addEventListener("input", function(){ setRec(o.id,"n",nTa.value); });
+  var assign = el("div",{cls:"assign"},[
+    el("label",{},[document.createTextNode("Assigned volunteer"),vIn]),
+    el("label",{},[document.createTextNode("Status"),sSel]),
+    el("label",{},[document.createTextNode("Notes"),nTa])
+  ]);
+  var art = el("article",{cls:"opp"+(r.v.trim()?" has-owner":""),id:"opp-"+o.id,style:"--tc:"+tierColor(o.t)},[
+    el("div",{cls:"rank",text:String(o.rank),"aria-label":"Rank "+o.rank}),
+    el("div",{cls:"main"},[h3,el("p",{cls:"type",text:o.type}),facts,det]),
+    assign
+  ]);
+  rowEls[o.id] = {art:art,v:vIn,s:sSel,n:nTa,o:o};
+  return art;
+}
+
+function renderChecks(list){
+  var ul = el("ul",{cls:"checklist"});
+  list.forEach(function(c){
+    var cb = el("input",{type:"checkbox",id:c.id,"aria-labelledby":c.id+"-t"});
+    cb.checked = !!current.checks[c.id];
+    var li = el("li",{cls:cb.checked?"done":""},[cb, el("div",{},[el("b",{id:c.id+"-t",text:c.title}),el("p",{text:c.body})])]);
+    cb.addEventListener("change", function(){
+      if (cb.checked) current.checks[c.id] = true; else delete current.checks[c.id];
+      li.classList.toggle("done", cb.checked); changed();
+    });
+    ul.appendChild(li);
+  });
+  return ul;
+}
+
+function namesOf(v){ return String(v||"").split(",").map(function(s){ return s.trim(); }).filter(Boolean); }
+
+function renderRoster(){
+  var box = document.getElementById("rosterList"); if (!box) return;
+  box.innerHTML = "";
+  var map = {}, order = [];
+  OPPS.forEach(function(o){
+    namesOf(rec(o.id).v).forEach(function(nm){
+      var k = nm.toLowerCase();
+      if (!map[k]) { map[k] = {name:nm, items:[]}; order.push(k); }
+      map[k].items.push(o);
+    });
+  });
+  if (!order.length){ box.appendChild(el("p",{cls:"none",text:"No volunteers assigned yet. Type a name in any Assigned volunteer box to start."})); return; }
+  order.sort(function(a,b){ return map[a].name.localeCompare(map[b].name); });
+  order.forEach(function(k){
+    var ul = el("ul");
+    map[k].items.forEach(function(o){
+      var st = rec(o.id).s || "Not started";
+      var a = el("a",{href:"#opp-"+o.id,text:"#"+o.rank+" "+o.name});
+      ul.appendChild(el("li",{},[a, document.createTextNode(" ("+st+")")]));
+    });
+    box.appendChild(el("div",{cls:"person"},[el("h3",{text:map[k].name+" ("+map[k].items.length+")"}),ul]));
+  });
+}
+
+function refreshDatalist(){
+  var dl = document.getElementById("vols"); if (!dl) return;
+  var seen = {}; dl.innerHTML = "";
+  OPPS.forEach(function(o){ namesOf(rec(o.id).v).forEach(function(n){ var k=n.toLowerCase(); if(!seen[k]){ seen[k]=1; dl.appendChild(el("option",{value:n})); } }); });
+}
+
+function updateStats(){
+  var box = document.getElementById("stats"); if (!box) return;
+  var assigned=0, active=0, submitted=0, awarded=0;
+  OPPS.forEach(function(o){
+    var r = rec(o.id);
+    if (r.v.trim()) assigned++;
+    if (r.s==="Researching"||r.s==="Drafting") active++;
+    if (r.s==="Submitted") submitted++;
+    if (r.s==="Awarded") awarded++;
+  });
+  box.innerHTML = "";
+  [[assigned+" of "+OPPS.length,"assigned"],[String(active),"in progress"],[String(submitted),"submitted"],[String(awarded),"awarded"]].forEach(function(p){
+    box.appendChild(el("div",{cls:"stat"},[el("b",{text:p[0]}),el("span",{text:p[1]})]));
+  });
+}
+
+function applyFilters(){
+  var q = (document.getElementById("fText").value||"").toLowerCase().trim();
+  var ft = document.getElementById("fTier").value;
+  var fp = document.getElementById("fPhase").value;
+  var fs = document.getElementById("fStatus").value;
+  var fu = document.getElementById("fUnassigned").checked;
+  var shown = 0, perTier = {1:0,2:0,3:0,4:0,5:0}, totalTier = {1:0,2:0,3:0,4:0,5:0};
+  Object.keys(rowEls).forEach(function(id){
+    var x = rowEls[id], o = x.o, r = rec(id);
+    totalTier[o.t]++;
+    var hay = (o.name+" "+o.type+" "+o.fit+" "+o.act+" "+r.v+" "+r.n).toLowerCase();
+    var ok = (!q || hay.indexOf(q) > -1) && (!ft || String(o.t)===ft) && (!fp || String(o.p)===fp) &&
+             (!fs || (r.s||"Not started")===fs) && (!fu || !r.v.trim());
+    x.art.hidden = !ok;
+    if (ok){ shown++; perTier[o.t]++; }
+  });
+  [1,2,3,4,5].forEach(function(t){
+    var sec = document.getElementById("tier-"+t);
+    sec.hidden = perTier[t] === 0;
+    var c = sec.querySelector("[data-count]");
+    c.textContent = perTier[t] === totalTier[t] ? totalTier[t]+" opportunities" : perTier[t]+" of "+totalTier[t]+" shown";
+  });
+  document.getElementById("empty").style.display = shown ? "none" : "block";
+}
+
+function updateBar(){
+  var btn = document.getElementById("saveBtn"), st = document.getElementById("saveStatus");
+  if (!btn) return;
+  var dirty = !sameData(current, saved);
+  btn.disabled = !dirty || mode === "pending";
+  st.classList.toggle("dirty", dirty && !statusMsg);
+  if (statusMsg) st.textContent = statusMsg;
+  else if (dirty) st.textContent = "Unsaved changes";
+  else if (mode === "shared") st.textContent = saved.updated ? "All changes saved "+fmt(saved.updated) : "Shared with everyone who opens this page";
+  else if (mode === "local" || mode === "readonly") st.textContent = "Saves on this device only";
+  else st.textContent = "Connecting";
+}
+function fmt(iso){ try { return new Date(iso).toLocaleString(undefined,{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"}); } catch(e){ return ""; } }
+function setStatus(m){ statusMsg = m; updateBar(); }
+
+/* ---------- Saving ---------- */
+function esc(json){ return json.replace(/</g,"\\u003c"); }
+function buildHTML(state){
+  var css = document.getElementById("css").textContent;
+  var app = document.getElementById("app").textContent;
+  var endScript = "<" + "/script>";
+  return "<!doctype html>\n<html lang=\"en\">\n<head>\n" + HEAD + "\n<style id=\"css\">" + css + "</" + "style>\n</head>\n<body>\n<div id=\"root\"></div>\n" +
+    "<script type=\"application/json\" id=\"state\">" + esc(JSON.stringify(state)) + endScript + "\n" +
+    "<script id=\"app\">" + app + endScript + "\n</body>\n</html>\n";
+}
+
+function saveLocal(msg){
+  try { localStorage.setItem(LOCAL_KEY, JSON.stringify(current)); saved = norm(current); clearDraft(); setStatus(msg || "Saved on this device"); }
+  catch(e){ setStatus("This browser blocked saving. Copy your notes somewhere safe."); }
+}
+
+function save(retried){
+  if (sameData(current, saved)) return;
+  if (mode === "local" || mode === "readonly"){ saveLocal(); return; }
+  if (mode !== "shared" || !artifactNs) return;
+  var next = norm(current); next.updated = new Date().toISOString();
+  stashDraft(next);
+  document.getElementById("saveBtn").disabled = true;
+  setStatus("Saving");
+  artifactNs.publish(buildHTML(next)).then(function(){
+    setStatus("Saved. Refreshing to the new version");
+  }).catch(function(err){
+    var code = err && err.code;
+    if (code === "conflict"){ setStatus("Someone saved first. Loading their version; your edits stay here as unsaved changes."); return; }
+    if (["not_writer","not_granted","consent_required","not_declared","capability_disabled","capability_removed"].indexOf(code) > -1){
+      mode = "readonly"; saveLocal("You can view this page but not update it for everyone. Your changes are saved on this device only."); return;
+    }
+    if (code === "rate_limited"){ setStatus("Saving too often. Wait a minute, then save again."); return; }
+    if (code === "too_large"){ setStatus("Notes are too long to save. Shorten a few and try again."); return; }
+    if (!retried){ setStatus("Save failed. Trying once more"); setTimeout(function(){ save(true); }, 1200 + Math.random()*1500); return; }
+    setStatus("Save failed. Your edits are kept here; try again in a moment.");
+  });
+}
+
+function reloadRows(){
+  Object.keys(rowEls).forEach(function(id){
+    var x = rowEls[id], r = rec(id);
+    x.v.value = r.v; x.s.value = r.s || "Not started"; x.n.value = r.n;
+    x.art.classList.toggle("has-owner", !!r.v.trim());
+  });
+  document.querySelectorAll("ul.checklist input").forEach(function(cb){
+    cb.checked = !!current.checks[cb.id]; cb.closest("li").classList.toggle("done", cb.checked);
+  });
+  updateStats(); renderRoster(); refreshDatalist(); applyFilters();
+}
+
+function goLocal(){
+  mode = "local";
+  try {
+    var l = localStorage.getItem(LOCAL_KEY);
+    if (l){
+      var ll = norm(JSON.parse(l));
+      var hadDraft = !sameData(current, saved);
+      saved = ll; if (!hadDraft) current = norm(ll);
+      reloadRows();
+    }
+  } catch(e){}
+  updateBar();
+}
+
+render();
+
+if (window.claude && typeof window.claude.use === "function"){
+  window.claude.use("artifact").then(function(ns){
+    if (ns){ artifactNs = ns; mode = "shared"; updateBar(); }
+    else goLocal();
+  }).catch(goLocal);
+} else {
+  goLocal();
+}
+})();
+</script>
+</body>
+</html>
